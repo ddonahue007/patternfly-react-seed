@@ -10,7 +10,8 @@ import { LastLocationProvider, useLastLocation } from 'react-router-last-locatio
 
 let routeFocusTimer: number;
 
-const getSupportModuleAsync = () => () => import(/* webpackChunkName: 'support' */ '@app/Support/Support');
+const getSupportModuleAsync = () => () => import('@app/Support/Support');
+const getContactModuleAsync = () => () => import('@app/ContactList/ContactList');
 
 const Support = (routeProps: RouteComponentProps) => {
   const lastNavigation = useLastLocation();
@@ -37,6 +38,31 @@ const Support = (routeProps: RouteComponentProps) => {
   );
 };
 
+const ContactList = (routeProps: RouteComponentProps) => {
+  const lastNavigation = useLastLocation();
+  return (
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    <DynamicImport load={getContactModuleAsync()} focusContentAfterMount={lastNavigation !== null}>
+      {(Component: any) => {
+        let loadedComponent: any;
+        /* eslint-enable @typescript-eslint/no-explicit-any */
+        if (Component === null) {
+          loadedComponent = (
+            <PageSection aria-label="Loading Content Container">
+              <div className="pf-l-bullseye">
+                <Alert title="Loading" className="pf-l-bullseye__item" />
+              </div>
+            </PageSection>
+          );
+        } else {
+          loadedComponent = <Component.ContactList {...routeProps} />;
+        }
+        return loadedComponent;
+      }}
+    </DynamicImport>
+  );
+};
+
 export interface IAppRoute {
   label?: string;
   /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -50,11 +76,11 @@ export interface IAppRoute {
 
 const routes: IAppRoute[] = [
   {
-    component: Dashboard,
+    component: ContactList,
     exact: true,
-    label: 'Dashboard',
-    path: '/',
-    title: 'Main Dashboard Title'
+    label: 'Contacts',
+    path: '/contactlist',
+    title: 'Contacts Page'
   },
   {
     component: Support,
@@ -76,17 +102,24 @@ const useA11yRouteChange = (isAsync: boolean) => {
       routeFocusTimer = accessibleRouteChangeHandler();
     }
     return () => {
-      window.clearTimeout(routeFocusTimer);
+      clearTimeout(routeFocusTimer);
     };
   }, [isAsync, lastNavigation]);
-};
+}
 
-const RouteWithTitleUpdates = ({ component: Component, isAsync = false, title, ...rest }: IAppRoute) => {
+const RouteWithTitleUpdates = ({
+                                 component: Component,
+                                 isAsync = false,
+                                 title,
+                                 ...rest
+                               }: IAppRoute) => {
   useA11yRouteChange(isAsync);
   useDocumentTitle(title);
 
   function routeWithTitle(routeProps: RouteComponentProps) {
-    return <Component {...rest} {...routeProps} />;
+    return (
+      <Component {...rest} {...routeProps} />
+    );
   }
 
   return <Route render={routeWithTitle} />;
@@ -95,7 +128,7 @@ const RouteWithTitleUpdates = ({ component: Component, isAsync = false, title, .
 const PageNotFound = ({ title }: { title: string }) => {
   useDocumentTitle(title);
   return <Route component={NotFound} />;
-};
+}
 
 const AppRoutes = () => (
   <LastLocationProvider>
