@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 const BG_IMAGES_DIRNAME = 'bgimages';
+const webpack = require('webpack');
 
 module.exports = {
   entry: {
@@ -11,6 +12,12 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'src', 'index.html')
+    }),
+    new webpack.DefinePlugin({
+      'process.env': {
+        'API_HOST': '"localhost"',
+        'API_PORT': '"8080"'
+      }
     })
   ],
   module: {
