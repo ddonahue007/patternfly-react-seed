@@ -15,8 +15,8 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       'process.env': {
-        'API_HOST': '"localhost"',
-        'API_PORT': '"8080"'
+        'API_HOST': JSON.stringify(process.env.CUSTOMER_DEMO_API_SERVICE_HOST || 'localhost'),
+        'API_PORT': JSON.stringify(process.env.CUSTOMER_DEMO_API_SERVICE_PORT || '8080')
       }
     })
   ],
