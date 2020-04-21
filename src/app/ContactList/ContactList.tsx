@@ -8,11 +8,15 @@ class ContactList extends React.Component {
     customers: []
   }
 
-  public componentDidMount() {
-    API.get('/customer')
+  async componentDidMount() {
+    await API.get('/customer')
       .then(res => {
-          const customers = res.data;
-          this.setState({ customers })})
+        const customers = res.data;
+        this.setState({ customers })
+      }).catch(error => {
+        // TODO: add to logger
+        console.log(`Axios request failed: ${error}`)
+    });
   }
 
   public render() {

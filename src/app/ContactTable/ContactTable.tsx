@@ -3,10 +3,10 @@ import { Table, TableHeader, TableBody } from '@patternfly/react-table';
 
 export const ContactTable = props => {
   const columns = [
-    { title: 'ID' },
-    { title: 'Name' },
-    { title: 'Address' },
-    { title: 'Email' },
+    { title: <div>ID</div> },
+    { title: <div>Name</div> },
+    { title: <div>Address</div> },
+    { title: <div>Email</div> },
   ];
 
   return (
@@ -18,18 +18,10 @@ export const ContactTable = props => {
       rows={props.rows
         .map((row) => ({
           cells: [
-            <div className='pf-m-fit-content'>
-              {row.id}
-            </div>,
-            <div>
-              {row.name}
-            </div>,
-            <div>
-              {row.address}
-            </div>,
-            <div>
-              {row.email}
-            </div>
+            { title: <div className='pf-m-fit-content'>{row.id}</div> },
+            { title: <div>{row.name}</div> },
+            { title: <div>{row.address}</div> },
+            { title: <div>{row.email}</div> }
           ]
         }))}
     >
