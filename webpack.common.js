@@ -4,6 +4,7 @@ const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 const BG_IMAGES_DIRNAME = 'bgimages';
 const webpack = require('webpack');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
   entry: {
@@ -13,11 +14,11 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'src', 'index.html')
     }),
-    new webpack.DefinePlugin({
-      'process.env': {
-        'API_HOST': JSON.stringify(process.env.CUSTOMER_DEMO_API_SERVICE_HOST || 'localhost'),
-        'API_PORT': JSON.stringify(process.env.CUSTOMER_DEMO_API_SERVICE_PORT || '8080')
-      }
+    new Dotenv({
+      safe: true, // load '.env.example' to verify the '.env' variables are all set. Can also be a string to a different file.
+      systemvars: true, // load all the predefined 'process.env' variables which will trump anything local per dotenv specs.
+      silent: true, // hide any errors
+      defaults: false // load '.env.defaults' as the default values if empty.
     })
   ],
   module: {
