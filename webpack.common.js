@@ -3,7 +3,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 const BG_IMAGES_DIRNAME = 'bgimages';
-const webpack = require('webpack');
 const Dotenv = require('dotenv-webpack');
 
 module.exports = {
@@ -16,6 +15,7 @@ module.exports = {
     }),
     new Dotenv({
       systemvars: true,
+      silent: true,
     })
   ],
   module: {

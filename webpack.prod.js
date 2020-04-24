@@ -5,6 +5,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserJSPlugin = require('terser-webpack-plugin');
 
+const Dotenv = require('dotenv-webpack');
+
 module.exports = merge(common, {
   mode: 'production',
   devtool: 'source-map',
@@ -18,6 +20,11 @@ module.exports = merge(common, {
     new MiniCssExtractPlugin({
       filename: '[name].css',
       chunkFilename: '[name].bundle.css'
+    }),
+    new Dotenv({
+      path: './.env_PROD',
+      systemvars: true,
+      silent: true,
     })
   ],
   module: {
