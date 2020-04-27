@@ -9,7 +9,7 @@ class ContactList extends React.Component {
   }
 
   async componentDidMount() {
-    await API.get('/customer')
+    await API.get('/customer', { crossdomain: true })
       .then(res => {
         const customers = res.data;
         this.setState({ customers })
